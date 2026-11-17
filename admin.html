@@ -84,6 +84,7 @@ function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null
 var D=null,built=false;
 var LK_WISH='undangan-ucapan', LK_SET='undangan-settings', ADM_PW='admin123';
 var DEFAULTS = {
+  theme: "batik_bunga",
   pria: "Raka", wanita: "Anindya",
   pria_lengkap: "Raka Pratama", wanita_lengkap: "Anindya Putri",
   ortu_pria: "Putra dari Bapak Hendra Pratama\n& Ibu Sari Wulandari",
@@ -154,9 +155,18 @@ function handleStaticApi(m, u, b) {
   return Promise.resolve({ ok: true });
 }
 
-var F=[['pria','Nama panggilan pria'],['wanita','Nama panggilan wanita'],['pria_lengkap','Nama lengkap pria'],['wanita_lengkap','Nama lengkap wanita'],
-['ortu_pria','Orang tua pria (2 baris)','ta'],['ortu_wanita','Orang tua wanita (2 baris)','ta'],['tanggal','Tanggal & jam akad (WIB)','datetime-local'],['rsvp_batas','Batas konfirmasi','date'],
-['akad_jam','Jam akad nikah'],['resepsi_jam','Jam resepsi'],['venue','Nama tempat'],['alamat','Alamat (2 baris)','ta'],['maps','Link Google Maps (https://)','url'],['bank','Bank & nama pemilik'],['rekening','Nomor rekening']];
+var F=[
+  ['theme', 'Tema & Desain Undangan', 'select', [
+    ['batik_bunga', '🌸 Batik Bunga Nusantara (Maroon Elegan & Emas)'],
+    ['jawa_klasik', '🏛️ Batik Klasik Sogan (Cokelat Keraton & Emas)'],
+    ['floral_romantis', '🌹 Bunga Romantis (Dusty Rose & Blush Gold)'],
+    ['emerald_gold', '🌿 Emerald Botanical (Hijau Zamrud & Emas Mewah)'],
+    ['warm', '🍂 Hangat Terracotta (Bata & Krem Klasik)']
+  ]],
+  ['pria','Nama panggilan pria'],['wanita','Nama panggilan wanita'],['pria_lengkap','Nama lengkap pria'],['wanita_lengkap','Nama lengkap wanita'],
+  ['ortu_pria','Orang tua pria (2 baris)','ta'],['ortu_wanita','Orang tua wanita (2 baris)','ta'],['tanggal','Tanggal & jam akad (WIB)','datetime-local'],['rsvp_batas','Batas konfirmasi','date'],
+  ['akad_jam','Jam akad nikah'],['resepsi_jam','Jam resepsi'],['venue','Nama tempat'],['alamat','Alamat (2 baris)','ta'],['maps','Link Google Maps (https://)','url'],['bank','Bank & nama pemilik'],['rekening','Nomor rekening']
+];
 
 function api(m,u,b){
   if (isStaticMode) {
@@ -212,8 +222,22 @@ function render(){
   if(!built){
     built=true;var f=$('#fields');
     F.forEach(function(x){
-      var lb=el('label',null,x[1]),inp=x[2]==='ta'?el('textarea'):el('input');
-      if(x[2]&&x[2]!=='ta')inp.type=x[2];inp.id='f_'+x[0];inp.value=D.settings[x[0]]||'';
+      var lb=el('label',null,x[1]), inp;
+      if(x[2]==='select'){
+        inp=el('select');
+        x[3].forEach(function(opt){
+          var o=el('option',null,opt[1]);
+          o.value=opt[0];
+          inp.appendChild(o);
+        });
+      } else if(x[2]==='ta'){
+        inp=el('textarea');
+      } else {
+        inp=el('input');
+        if(x[2])inp.type=x[2];
+      }
+      inp.id='f_'+x[0];
+      inp.value=D.settings[x[0]]||(x[2]==='select'?x[3][0][0]:'');
       lb.appendChild(inp);f.appendChild(lb);
     });
   }

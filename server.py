@@ -23,6 +23,7 @@ DEFAULTS = {
     "alamat": "Jl. Kenanga Raya No. 12, Menteng,\nJakarta Pusat 10310",
     "maps": "https://maps.google.com/?q=Jakarta",
     "bank": "Bank BCA · a.n. Raka Pratama", "rekening": "1234 5678 90",
+    "theme": "batik_bunga",
 }
 sessions, last_post, fails = set(), {}, {}
 
