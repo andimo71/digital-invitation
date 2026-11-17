@@ -55,8 +55,8 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
   <div class="bar">
     <h1>Admin Undangan</h1>
     <div class="acts">
-      <a class="btn" href="/" target="_blank" rel="noopener">Lihat undangan</a>
-      <a class="btn" href="/admin/export.csv">Ekspor CSV</a>
+      <a class="btn" href="./" target="_blank" rel="noopener">Lihat undangan</a>
+      <a class="btn" id="exportBtn" href="/admin/export.csv">Ekspor CSV</a>
       <button class="btn" id="out" type="button">Keluar</button>
     </div>
   </div>
@@ -82,14 +82,105 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 var $=function(s){return document.querySelector(s)};
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 var D=null,built=false;
+var LK_WISH='undangan-ucapan', LK_SET='undangan-settings', ADM_PW='admin123';
+var DEFAULTS = {
+  pria: "Raka", wanita: "Anindya",
+  pria_lengkap: "Raka Pratama", wanita_lengkap: "Anindya Putri",
+  ortu_pria: "Putra dari Bapak Hendra Pratama\n& Ibu Sari Wulandari",
+  ortu_wanita: "Putri dari Bapak Bambang Setiawan\n& Ibu Ratna Dewi",
+  tanggal: "2027-03-20T08:00", rsvp_batas: "2027-03-10",
+  akad_jam: "08.00 – 10.00 WIB", resepsi_jam: "11.00 – 14.00 WIB",
+  venue: "Gedung Serbaguna Melati",
+  alamat: "Jl. Kenanga Raya No. 12, Menteng,\nJakarta Pusat 10310",
+  maps: "https://maps.google.com/?q=Jakarta",
+  bank: "Bank BCA · a.n. Raka Pratama", rekening: "1234 5678 90"
+};
+
+var isStaticMode = (window.location.hostname.indexOf('github.io') !== -1);
+if (sessionStorage.getItem('adm_static') === '1') isStaticMode = true;
+
+function getLocalData() {
+  var wishes = [];
+  try { wishes = JSON.parse(localStorage.getItem(LK_WISH) || '[]'); } catch(e){}
+  wishes = wishes.map(function(item, idx){
+    return {
+      id: item.id || (idx + 1),
+      nama: item.nama || '',
+      status: item.status || 'Hadir',
+      jumlah: item.jumlah || 1,
+      ucapan: item.ucapan || '',
+      tampil: item.tampil !== undefined ? item.tampil : 1,
+      created_at: item.created_at || new Date().toISOString()
+    };
+  });
+  var settings = Object.assign({}, DEFAULTS);
+  try {
+    var saved = JSON.parse(localStorage.getItem(LK_SET) || '{}');
+    Object.assign(settings, saved);
+  } catch(e){}
+  return { wishes: wishes, settings: settings };
+}
+
+function handleStaticApi(m, u, b) {
+  if (u === '/admin/api/login') {
+    if (b && b.password === ADM_PW) {
+      sessionStorage.setItem('adm_static', '1');
+      isStaticMode = true;
+      return Promise.resolve({ ok: true });
+    }
+    return Promise.reject(new Error('Kata sandi salah.'));
+  }
+  if (u === '/admin/api/logout') {
+    sessionStorage.removeItem('adm_static');
+    return Promise.resolve({ ok: true });
+  }
+  if (u === '/admin/api/data') {
+    return Promise.resolve(getLocalData());
+  }
+  if (u === '/admin/api/wish') {
+    var data = getLocalData();
+    if (b.action === 'toggle') {
+      data.wishes.forEach(function(w){ if (w.id === b.id) w.tampil = w.tampil ? 0 : 1; });
+    } else if (b.action === 'delete') {
+      data.wishes = data.wishes.filter(function(w){ return w.id !== b.id; });
+    }
+    localStorage.setItem(LK_WISH, JSON.stringify(data.wishes));
+    return Promise.resolve({ ok: true });
+  }
+  if (u === '/admin/api/settings') {
+    localStorage.setItem(LK_SET, JSON.stringify(b));
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.resolve({ ok: true });
+}
+
 var F=[['pria','Nama panggilan pria'],['wanita','Nama panggilan wanita'],['pria_lengkap','Nama lengkap pria'],['wanita_lengkap','Nama lengkap wanita'],
 ['ortu_pria','Orang tua pria (2 baris)','ta'],['ortu_wanita','Orang tua wanita (2 baris)','ta'],['tanggal','Tanggal & jam akad (WIB)','datetime-local'],['rsvp_batas','Batas konfirmasi','date'],
 ['akad_jam','Jam akad nikah'],['resepsi_jam','Jam resepsi'],['venue','Nama tempat'],['alamat','Alamat (2 baris)','ta'],['maps','Link Google Maps (https://)','url'],['bank','Bank & nama pemilik'],['rekening','Nomor rekening']];
+
 function api(m,u,b){
+  if (isStaticMode) {
+    return handleStaticApi(m, u, b);
+  }
   return fetch(u,{method:m,credentials:'same-origin',headers:{'Content-Type':'application/json','X-Admin':'1'},body:b?JSON.stringify(b):undefined})
   .then(function(r){
     if(r.status===401&&u!=='/admin/api/login'){show(false);throw new Error('auth')}
     return r.json().then(function(d){if(!r.ok)throw new Error(d.error||'Gagal');return d});
+  })
+  .catch(function(err){
+    if (u === '/admin/api/login') {
+      if (b && b.password === ADM_PW) {
+        isStaticMode = true;
+        sessionStorage.setItem('adm_static', '1');
+        return { ok: true };
+      }
+      throw new Error('Kata sandi salah.');
+    }
+    if (sessionStorage.getItem('adm_static') === '1') {
+      isStaticMode = true;
+      return handleStaticApi(m, u, b);
+    }
+    throw err;
   });
 }
 function show(on){$('#login').hidden=on;$('#app').hidden=!on}
@@ -139,6 +230,27 @@ $('#save').onclick=function(){
   $('#smsg').textContent='Menyimpan\u2026';
   api('POST','/admin/api/settings',b).then(function(){$('#smsg').textContent='Tersimpan. Muat ulang halaman undangan untuk melihat perubahan.';return load()}).catch(function(e){$('#smsg').textContent=e.message});
 };
+var exp = $('#exportBtn');
+if (exp) {
+  exp.addEventListener('click', function(e){
+    if (isStaticMode) {
+      e.preventDefault();
+      var data = getLocalData();
+      var csv = "ID,Nama,Status,Jumlah,Ucapan,Waktu\n";
+      data.wishes.forEach(function(w){
+        csv += [w.id, '"'+(w.nama||'').replace(/"/g, '""')+'"', w.status, w.jumlah, '"'+(w.ucapan||'').replace(/"/g, '""')+'"', w.created_at].join(",") + "\n";
+      });
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "undangan_wishes.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  });
+}
 load();
 })();
 </script>

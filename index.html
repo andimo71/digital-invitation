@@ -262,7 +262,12 @@ Jakarta Pusat 10310</p>
     if(c.pria&&c.wanita){setK('pasangan',c.pria+' & '+c.wanita);document.title='Undangan Pernikahan '+c.pria+' & '+c.wanita}
     if(/^https:\/\//.test(c.maps||''))document.querySelectorAll('[data-kh="maps"]').forEach(function(a){a.href=c.maps});
   }
-  fetch('/api/settings').then(function(r){if(!r.ok)throw 0;return r.json()}).then(applyCfg).catch(function(){});
+  fetch('/api/settings').then(function(r){if(!r.ok)throw 0;return r.json()}).then(applyCfg).catch(function(){
+    try {
+      var localCfg = JSON.parse(localStorage.getItem('undangan-settings') || '{}');
+      if (Object.keys(localCfg).length) applyCfg(localCfg);
+    } catch(e){}
+  });
 
   // Baca nama tamu dari URL (?to=Nama+Tamu atau ?tamu=... atau #...)
   try {

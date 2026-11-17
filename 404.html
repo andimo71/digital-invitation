@@ -11,6 +11,10 @@
   var idx = path.indexOf(base);
   if (idx !== -1) {
     var segment = path.slice(idx + base.length).replace(/\/$/, '');
+    if (segment === 'admin') {
+      window.location.replace(base + 'admin.html');
+      return;
+    }
     if (segment && segment !== 'index.html' && segment !== 'admin.html') {
       window.location.replace(base + '?to=' + encodeURIComponent(segment));
       return;
