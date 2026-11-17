@@ -373,32 +373,50 @@ Jakarta Pusat 10310</p>
   }
   var LK='undangan-ucapan',demo=false;
   var mem=[];
+  var GAS_URL='https://script.google.com/macros/s/AKfycbyNBEjQi-ZImei-vSHx-_7XrW4SL-_l31EmdwB-bKlZ5hp_XtvkZlU71qT9ZVknu1XQSA/exec';
   function getLocal(){var a=[];try{a=JSON.parse(localStorage.getItem(LK)||'[]')}catch(e){}return a.length?a:mem}
   function saveLocal(p){var it={nama:p.nama,status:p.status,jumlah:p.jumlah,ucapan:p.ucapan},a=getLocal().slice();a.unshift(it);mem=a.slice(0,50);try{localStorage.setItem(LK,JSON.stringify(mem))}catch(e){}}
   function load(){
-    fetch('/api/wishes').then(function(r){if(!r.ok)throw 0;return r.json()})
-    .then(function(d){if(!Array.isArray(d))throw 0;demo=false;document.getElementById('demo').hidden=true;render(d)})
-    .catch(function(){demo=true;document.getElementById('demo').hidden=false;render(getLocal())});
+    var fetchUrl=(window.location.hostname==='127.0.0.1'||window.location.hostname==='localhost')?'/api/wishes':GAS_URL;
+    fetch(fetchUrl).then(function(r){if(!r.ok)throw 0;return r.json()})
+    .then(function(d){if(!Array.isArray(d))throw 0;demo=false;var dm=document.getElementById('demo');if(dm)dm.hidden=true;render(d)})
+    .catch(function(){
+      if(fetchUrl!==GAS_URL){
+        return fetch(GAS_URL).then(function(r){if(!r.ok)throw 0;return r.json()})
+        .then(function(d){if(!Array.isArray(d))throw 0;demo=false;var dm=document.getElementById('demo');if(dm)dm.hidden=true;render(d)});
+      }
+      throw 0;
+    })
+    .catch(function(){demo=true;var dm=document.getElementById('demo');if(dm)dm.hidden=false;render(getLocal())});
   }
-  load();setInterval(load,30000);
+  load();setInterval(load,15000);
   btn.addEventListener('click',function(){
     var nm=document.getElementById('n');
     if(!nm.value.trim()){msg.textContent='Mohon isi nama Anda terlebih dahulu.';nm.focus();return}
     btn.disabled=true;msg.textContent='Mengirim\u2026';
     var v=function(id){return document.getElementById(id).value.trim()};
     var p={nama:v('n'),status:v('k'),jumlah:parseInt(v('j'),10),ucapan:v('u')};
-    fetch('/api/wishes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)})
-    .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d}},function(){return null})})
-    .then(function(x){
-      if(!x){saveLocal(p);return 'local'}
-      if(!x.ok)throw new Error(x.d.error||'Gagal');
-      return 'server';
-    },function(){saveLocal(p);return 'local'})
-    .then(function(m){
-      msg.textContent=m==='local'?'Terima kasih! Ucapan Anda tampil di bawah (mode pratinjau, tersimpan di perangkat ini).':'Terima kasih, konfirmasi Anda sudah kami terima.';
+
+    var isLocal=(window.location.hostname==='127.0.0.1'||window.location.hostname==='localhost');
+    var postPromise;
+    if(isLocal){
+      postPromise=fetch('/api/wishes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}).then(function(r){return r.ok});
+    }else{
+      postPromise=fetch(GAS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(p)}).then(function(){return true});
+    }
+
+    postPromise
+    .then(function(){
+      saveLocal(p);
+      msg.textContent='Terima kasih, konfirmasi kehadiran Anda sudah kami terima.';
+      f.reset();
+      setTimeout(load,1500);
+    })
+    .catch(function(err){
+      saveLocal(p);
+      msg.textContent=err.message||'Terima kasih! Ucapan Anda sudah dicatat.';
       f.reset();load();
     })
-    .catch(function(err){msg.textContent=err.message||'Gagal mengirim, coba lagi.'})
     .then(function(){btn.disabled=false});
   });
 

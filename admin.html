@@ -83,6 +83,7 @@ var $=function(s){return document.querySelector(s)};
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 var D=null,built=false;
 var LK_WISH='undangan-ucapan', LK_SET='undangan-settings', ADM_PW='admin123';
+var GAS_URL='https://script.google.com/macros/s/AKfycbyNBEjQi-ZImei-vSHx-_7XrW4SL-_l31EmdwB-bKlZ5hp_XtvkZlU71qT9ZVknu1XQSA/exec';
 var DEFAULTS = {
   theme: "batik_bunga",
   pria: "Raka", wanita: "Anindya",
@@ -136,7 +137,31 @@ function handleStaticApi(m, u, b) {
     return Promise.resolve({ ok: true });
   }
   if (u === '/admin/api/data') {
-    return Promise.resolve(getLocalData());
+    return fetch(GAS_URL).then(function(r){if(!r.ok)throw 0;return r.json()})
+      .then(function(wishes){
+        var settings = Object.assign({}, DEFAULTS);
+        try {
+          var saved = JSON.parse(localStorage.getItem(LK_SET) || '{}');
+          Object.assign(settings, saved);
+        } catch(e){}
+        return {
+          wishes: wishes.map(function(item, idx){
+            return {
+              id: item.id || (idx + 1),
+              nama: item.nama || '',
+              status: item.status || 'Hadir',
+              jumlah: item.jumlah || 1,
+              ucapan: item.ucapan || '',
+              tampil: item.tampil !== undefined ? item.tampil : 1,
+              created_at: item.created_at || new Date().toISOString()
+            };
+          }),
+          settings: settings
+        };
+      })
+      .catch(function(){
+        return getLocalData();
+      });
   }
   if (u === '/admin/api/wish') {
     var data = getLocalData();
