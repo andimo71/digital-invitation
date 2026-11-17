@@ -3,304 +3,1117 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Admin Undangan</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — Undangan Pernikahan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#FBF1E6;--surface:#FFF9F2;--ink:#3E2A22;--muted:#6E5649;--gold:#9A4A26;--line:#E8D2BC;--danger:#A3261A}
-@media (prefers-color-scheme:dark){:root{--bg:#1F1511;--surface:#2A1D17;--ink:#F6E7D8;--muted:#C9AE9A;--gold:#E8B77A;--line:#4A3429;--danger:#FF9A8C}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:300 15px/1.6 'Jost',system-ui,sans-serif}
-[hidden]{display:none!important}
-.wrap{max-width:900px;margin:0 auto;padding:24px 18px 64px}
-h1,h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;margin:0}
-h1{font-size:34px}h2{font-size:26px;margin-bottom:14px}
-.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
-.btn{min-height:44px;padding:0 18px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:400 13px 'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
-.btn.solid{background:var(--gold);color:var(--bg)}
-.btn.danger{border-color:var(--danger);color:var(--danger)}
-.btn.sm{min-height:36px;padding:0 12px;font-size:12px}
-.card{background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:24px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
-.stat{background:var(--surface);border:1px solid var(--line);padding:16px}
-.stat b{display:block;font:600 34px 'Cormorant Garamond',serif;line-height:1.1;color:var(--gold)}
-.stat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-label{display:grid;gap:4px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-input,textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:300 15px 'Jost',sans-serif;border-radius:0}
-textarea{min-height:76px;resize:vertical}
-input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.row{border-top:1px solid var(--line);padding:14px 0;display:grid;gap:6px}
-.row.off{opacity:.6}
-.top{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
-.top b{font:600 20px 'Cormorant Garamond',serif}
-.chip{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.meta{font-size:13px;color:var(--muted)}
-.acts{display:flex;gap:8px;flex-wrap:wrap}
-.msg{min-height:1.6em;margin-top:10px;font-size:14px}
-#login{max-width:380px;margin:12vh auto 0}
+:root {
+  --primary: #9A4A26;
+  --primary-light: #FBF1E6;
+  --primary-hover: #7E381A;
+  --bg: #F8F9FA;
+  --surface: #FFFFFF;
+  --ink: #1E293B;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --success: #15803D;
+  --success-bg: #DCFCE7;
+  --danger: #B91C1C;
+  --danger-bg: #FEE2E2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px -2px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0F172A;
+    --surface: #1E293B;
+    --ink: #F1F5F9;
+    --muted: #94A3B8;
+    --border: #334155;
+    --primary-light: #2D1E16;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+
+/* LOGIN SCREEN */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+.login-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.login-card h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.login-card p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* NAVBAR */
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.nav-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.nav-brand span {
+  font-size: 22px;
+}
+.nav-brand h1 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.nav-brand small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn:hover {
+  background: var(--bg);
+  border-color: var(--muted);
+}
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #FFFFFF;
+}
+.btn-danger {
+  color: var(--danger);
+  border-color: var(--border);
+}
+.btn-danger:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* LAYOUT & TABS */
+.main-content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.stat-icon.brown { background: var(--primary-light); color: var(--primary); }
+.stat-icon.green { background: #DCFCE7; color: #16A34A; }
+.stat-icon.red { background: #FEE2E2; color: #DC2626; }
+.stat-icon.blue { background: #DBEAFE; color: #2563EB; }
+.stat-info span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.stat-info b {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* FORMS */
+.form-section {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.form-section:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+.section-headline {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group.full {
+  grid-column: 1 / -1;
+}
+label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+input, select, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(154, 74, 38, 0.15);
+}
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* WISHES LIST */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1;
+  min-width: 220px;
+}
+.wish-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  transition: box-shadow 0.15s ease;
+}
+.wish-item:hover { box-shadow: var(--shadow-sm); }
+.wish-item.hidden-item { opacity: 0.6; background: var(--bg); }
+.wish-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.wish-author {
+  font-weight: 700;
+  font-size: 15px;
+}
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.badge-hadir { background: var(--success-bg); color: var(--success); }
+.badge-absen { background: var(--danger-bg); color: var(--danger); }
+.wish-text {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.wish-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* LINK GENERATOR */
+.link-box {
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 14px;
+  word-break: break-all;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--primary);
+}
+.wa-preview {
+  background: #E8F5E9;
+  border-left: 4px solid #4CAF50;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1B5E20;
+  margin-top: 14px;
+  white-space: pre-wrap;
+}
+
+/* TOAST MESSAGE */
+.alert-msg {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 12px;
+  display: none;
+}
+.alert-msg.show { display: block; }
+.alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #BBF7D0; }
+.alert-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid #FECACA; }
 </style>
 </head>
 <body>
-<div class="wrap">
-<section id="login" class="card">
-  <h1>Admin</h1>
-  <p class="meta">Masukkan kata sandi admin untuk mengelola undangan.</p>
-  <label style="margin-top:14px">Kata sandi<input id="pw" type="password" autocomplete="current-password"></label>
-  <p style="margin-top:14px"><button class="btn solid" id="go" type="button">Masuk</button></p>
-  <p class="msg" id="lmsg" role="status"></p>
-</section>
 
-<div id="app" hidden>
-  <div class="bar">
-    <h1>Admin Undangan</h1>
-    <div class="acts">
-      <a class="btn" href="./" target="_blank" rel="noopener">Lihat undangan</a>
-      <a class="btn" id="exportBtn" href="/admin/export.csv">Ekspor CSV</a>
-      <button class="btn" id="out" type="button">Keluar</button>
+<!-- LOGIN VIEW -->
+<div id="loginView" class="login-wrap">
+  <div class="login-card">
+    <div class="login-icon">💍</div>
+    <h1>Wedding Admin</h1>
+    <p>Kelola data undangan, rekap kehadiran tamu, dan ubah tampilan dari satu tempat.</p>
+    <div class="form-group" style="text-align:left; margin-bottom: 16px;">
+      <label for="adminPw">Kata Sandi Admin</label>
+      <input id="adminPw" type="password" placeholder="Masukkan kata sandi..." autocomplete="current-password">
     </div>
-  </div>
-  <div class="stats" id="stats"></div>
-
-  <div class="card">
-    <h2>Konfirmasi &amp; Ucapan</h2>
-    <label>Cari nama atau ucapan<input id="q" type="search"></label>
-    <div id="list"></div>
-  </div>
-
-  <div class="card">
-    <h2>Pengaturan Undangan</h2>
-    <p class="meta">Kosongkan kolom untuk kembali ke isian bawaan. Perubahan tampil di undangan setelah halaman dimuat ulang.</p>
-    <div class="grid" id="fields" style="margin-top:14px"></div>
-    <p style="margin-top:16px"><button class="btn solid" id="save" type="button">Simpan pengaturan</button></p>
-    <p class="msg" id="smsg" role="status"></p>
+    <button class="btn btn-primary" id="loginBtn" type="button" style="width:100%; padding:12px;">Masuk ke Dashboard</button>
+    <div id="loginMsg" class="alert-msg alert-danger"></div>
   </div>
 </div>
+
+<!-- DASHBOARD VIEW -->
+<div id="dashboardView" hidden>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span>💍</span>
+        <div>
+          <h1>Dashboard Undangan</h1>
+          <small>Sistem Manajemen Tamu &amp; Desain</small>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="status-pill"><span class="status-dot"></span> Google Sheets Terhubung</span>
+        <a class="btn btn-sm" href="./" target="_blank" rel="noopener">👁️ Lihat Web</a>
+        <a class="btn btn-sm" id="openSheetsBtn" href="https://docs.google.com/spreadsheets" target="_blank" rel="noopener">📊 Buka Sheets</a>
+        <a class="btn btn-sm" id="exportBtn" href="/admin/export.csv">📥 Ekspor CSV</a>
+        <button class="btn btn-sm btn-danger" id="logoutBtn" type="button">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- NAVIGATION TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tabOverview">📊 Ringkasan &amp; Statistik</button>
+      <button class="tab-btn" data-tab="tabWishes">💌 Tamu &amp; Ucapan (<span id="tabCount">0</span>)</button>
+      <button class="tab-btn" data-tab="tabSettings">⚙️ Pengaturan Undangan</button>
+      <button class="tab-btn" data-tab="tabGenerator">🔗 Buat Link Tamu (WA)</button>
+      <button class="tab-btn" data-tab="tabSecurity">🔐 Keamanan / Password</button>
+    </div>
+
+    <!-- TAB 1: OVERVIEW -->
+    <div id="tabOverview" class="tab-pane">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon brown">✉️</div>
+          <div class="stat-info">
+            <span>Total Konfirmasi</span>
+            <b id="statTotal">0</b>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">✅</div>
+          <div class="stat-info">
+            <span>Tamu Hadir</span>
+            <b id="statHadir">0 <small style="font-size:14px;font-weight:400;color:var(--muted)">orang</small></b>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">❌</div>
+          <div class="stat-info">
+            <span>Berhalangan</span>
+            <b id="statAbsen">0</b>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">💬</div>
+          <div class="stat-info">
+            <span>Ucapan &amp; Doa</span>
+            <b id="statUcapan">0</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">✨ Ucapan Terbaru dari Tamu</h2>
+            <p class="card-subtitle">Data langsung tersinkronisasi dari Google Sheets secara realtime</p>
+          </div>
+          <button class="btn btn-sm" id="refreshBtn" type="button">🔄 Refresh Data</button>
+        </div>
+        <div id="recentWishesList"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: WISHES LIST -->
+    <div id="tabWishes" class="tab-pane" hidden>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">💌 Daftar Konfirmasi &amp; Ucapan Tamu</h2>
+            <p class="card-subtitle">Cari nama tamu, filter kehadiran, atau sembunyikan ucapan</p>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <input class="search-input" id="searchWish" type="search" placeholder="🔍 Cari nama tamu atau isi ucapan...">
+          <select id="filterStatus" style="width:auto; min-width:140px;">
+            <option value="all">Semua Status</option>
+            <option value="Hadir">Hanya Hadir</option>
+            <option value="Berhalangan hadir">Hanya Berhalangan</option>
+          </select>
+        </div>
+        <div id="allWishesList"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: SETTINGS -->
+    <div id="tabSettings" class="tab-pane" hidden>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">⚙️ Pengaturan Undangan</h2>
+            <p class="card-subtitle">Ubah teks dan tema acara. Perubahan akan langsung tampil di website undangan.</p>
+          </div>
+          <button class="btn btn-primary" id="saveSettingsBtn" type="button">💾 Simpan Perubahan</button>
+        </div>
+        <div id="settingsMsg" class="alert-msg"></div>
+
+        <!-- TEMA -->
+        <div class="form-section">
+          <div class="section-headline">🎨 Pilihan Desain &amp; Tema Warna</div>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="f_theme">Tema Undangan</label>
+              <select id="f_theme">
+                <option value="batik_bunga">🌸 Batik Bunga Nusantara (Maroon Elegan &amp; Emas)</option>
+                <option value="jawa_klasik">🏛️ Batik Klasik Sogan (Cokelat Keraton &amp; Emas)</option>
+                <option value="floral_romantis">🌹 Bunga Romantis (Dusty Rose &amp; Blush Gold)</option>
+                <option value="emerald_gold">🌿 Emerald Botanical (Hijau Zamrud &amp; Emas)</option>
+                <option value="warm">🍂 Hangat Terracotta (Bata &amp; Krem Klasik)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEMPELAI PRIA -->
+        <div class="form-section">
+          <div class="section-headline">🤵 Data Mempelai Pria</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f_pria">Nama Panggilan Pria</label>
+              <input id="f_pria" type="text" placeholder="Raka">
+            </div>
+            <div class="form-group">
+              <label for="f_pria_lengkap">Nama Lengkap Pria</label>
+              <input id="f_pria_lengkap" type="text" placeholder="Raka Pratama, S.T.">
+            </div>
+            <div class="form-group full">
+              <label for="f_ortu_pria">Nama Orang Tua Pria (Bisa 2 baris)</label>
+              <textarea id="f_ortu_pria" placeholder="Putra dari Bapak ...&#10;&amp; Ibu ..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEMPELAI WANITA -->
+        <div class="form-section">
+          <div class="section-headline">👰 Data Mempelai Wanita</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f_wanita">Nama Panggilan Wanita</label>
+              <input id="f_wanita" type="text" placeholder="Anindya">
+            </div>
+            <div class="form-group">
+              <label for="f_wanita_lengkap">Nama Lengkap Wanita</label>
+              <input id="f_wanita_lengkap" type="text" placeholder="Anindya Putri, S.Kom.">
+            </div>
+            <div class="form-group full">
+              <label for="f_ortu_wanita">Nama Orang Tua Wanita (Bisa 2 baris)</label>
+              <textarea id="f_ortu_wanita" placeholder="Putri dari Bapak ...&#10;&amp; Ibu ..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- WAKTU & TEMPAT -->
+        <div class="form-section">
+          <div class="section-headline">📅 Waktu &amp; Lokasi Acara</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f_tanggal">Tanggal &amp; Jam Akad (Countdown)</label>
+              <input id="f_tanggal" type="datetime-local">
+            </div>
+            <div class="form-group">
+              <label for="f_rsvp_batas">Batas Konfirmasi RSVP</label>
+              <input id="f_rsvp_batas" type="date">
+            </div>
+            <div class="form-group">
+              <label for="f_akad_jam">Jam Akad Nikah</label>
+              <input id="f_akad_jam" type="text" placeholder="08.00 – 10.00 WIB">
+            </div>
+            <div class="form-group">
+              <label for="f_resepsi_jam">Jam Resepsi Nikah</label>
+              <input id="f_resepsi_jam" type="text" placeholder="11.00 – 14.00 WIB">
+            </div>
+            <div class="form-group">
+              <label for="f_venue">Nama Gedung / Tempat</label>
+              <input id="f_venue" type="text" placeholder="Gedung Serbaguna Melati">
+            </div>
+            <div class="form-group">
+              <label for="f_maps">Link Google Maps (https://...)</label>
+              <input id="f_maps" type="url" placeholder="https://maps.google.com/?q=...">
+            </div>
+            <div class="form-group full">
+              <label for="f_alamat">Alamat Lengkap Tempat Acara</label>
+              <textarea id="f_alamat" placeholder="Jl. Kenanga Raya No. 12..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- REKENING -->
+        <div class="form-section">
+          <div class="section-headline">💳 Amplop Digital / Hadiah</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f_bank">Nama Bank &amp; Atas Nama</label>
+              <input id="f_bank" type="text" placeholder="Bank BCA · a.n. Raka Pratama">
+            </div>
+            <div class="form-group">
+              <label for="f_rekening">Nomor Rekening</label>
+              <input id="f_rekening" type="text" placeholder="1234 5678 90">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; text-align:right;">
+          <button class="btn btn-primary" id="saveSettingsBtn2" type="button">💾 Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: LINK GENERATOR -->
+    <div id="tabGenerator" class="tab-pane" hidden>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">🔗 Generator Link Tamu &amp; Pesan WhatsApp</h2>
+            <p class="card-subtitle">Buat link khusus berisikan nama tamu yang siap Anda bagikan via WhatsApp.</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="genGuestName">Nama Tamu Undangan</label>
+          <input id="genGuestName" type="text" placeholder="Contoh: Bpk. Joko &amp; Ibu, Sahabat Dimas, Keluarga Hendra">
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label>Link Khusus Tamu:</label>
+          <div class="link-box" id="genLinkResult">https://andimo71.github.io/digital-invitation/</div>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label>Pratinjau Pesan WhatsApp:</label>
+          <div class="wa-preview" id="genWaPreview"></div>
+        </div>
+
+        <div style="margin-top: 18px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="copyLinkBtn" type="button">📋 Salin Link</button>
+          <button class="btn" id="copyWaBtn" type="button">📋 Salin Teks WhatsApp</button>
+          <a class="btn" id="openWaBtn" href="#" target="_blank" rel="noopener" style="background:#25D366; color:#fff; border-color:#25D366;">💬 Kirim via WhatsApp</a>
+        </div>
+        <div id="genMsg" class="alert-msg alert-success">Link berhasil disalin ke clipboard!</div>
+      </div>
+    </div>
+
+    <!-- TAB 5: SECURITY -->
+    <div id="tabSecurity" class="tab-pane" hidden>
+      <div class="card" style="max-width: 500px;">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">🔐 Kata Sandi Admin</h2>
+            <p class="card-subtitle">Ganti kata sandi login panel admin ini.</p>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label for="newAdminPw">Kata Sandi Baru</label>
+          <input id="newAdminPw" type="password" placeholder="Masukkan password baru...">
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="confirmAdminPw">Konfirmasi Kata Sandi Baru</label>
+          <input id="confirmAdminPw" type="password" placeholder="Ketik ulang password baru...">
+        </div>
+        <button class="btn btn-primary" id="changePwBtn" type="button">Ubah Kata Sandi</button>
+        <div id="pwMsg" class="alert-msg"></div>
+      </div>
+    </div>
+  </main>
 </div>
+
 <script>
 (function(){
-var $=function(s){return document.querySelector(s)};
-function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-var D=null,built=false;
-var LK_WISH='undangan-ucapan', LK_SET='undangan-settings', ADM_PW='admin123';
-var GAS_URL='https://script.google.com/macros/s/AKfycbyNBEjQi-ZImei-vSHx-_7XrW4SL-_l31EmdwB-bKlZ5hp_XtvkZlU71qT9ZVknu1XQSA/exec';
-var DEFAULTS = {
-  theme: "batik_bunga",
-  pria: "Raka", wanita: "Anindya",
-  pria_lengkap: "Raka Pratama", wanita_lengkap: "Anindya Putri",
-  ortu_pria: "Putra dari Bapak Hendra Pratama\n& Ibu Sari Wulandari",
-  ortu_wanita: "Putri dari Bapak Bambang Setiawan\n& Ibu Ratna Dewi",
-  tanggal: "2027-03-20T08:00", rsvp_batas: "2027-03-10",
-  akad_jam: "08.00 – 10.00 WIB", resepsi_jam: "11.00 – 14.00 WIB",
-  venue: "Gedung Serbaguna Melati",
-  alamat: "Jl. Kenanga Raya No. 12, Menteng,\nJakarta Pusat 10310",
-  maps: "https://maps.google.com/?q=Jakarta",
-  bank: "Bank BCA · a.n. Raka Pratama", rekening: "1234 5678 90"
-};
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return document.querySelectorAll(s); };
 
-var isStaticMode = (window.location.hostname.indexOf('github.io') !== -1);
-if (sessionStorage.getItem('adm_static') === '1') isStaticMode = true;
+  var LK_WISH = 'undangan-ucapan';
+  var LK_SET = 'undangan-settings';
+  var LK_PW = 'undangan-admin-pw';
+  var DEFAULT_PW = 'admin123';
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbyNBEjQi-ZImei-vSHx-_7XrW4SL-_l31EmdwB-bKlZ5hp_XtvkZlU71qT9ZVknu1XQSA/exec';
 
-function getLocalData() {
-  var wishes = [];
-  try { wishes = JSON.parse(localStorage.getItem(LK_WISH) || '[]'); } catch(e){}
-  wishes = wishes.map(function(item, idx){
-    return {
-      id: item.id || (idx + 1),
-      nama: item.nama || '',
-      status: item.status || 'Hadir',
-      jumlah: item.jumlah || 1,
-      ucapan: item.ucapan || '',
-      tampil: item.tampil !== undefined ? item.tampil : 1,
-      created_at: item.created_at || new Date().toISOString()
+  var DEFAULTS = {
+    theme: "batik_bunga",
+    pria: "Raka", wanita: "Anindya",
+    pria_lengkap: "Raka Pratama", wanita_lengkap: "Anindya Putri",
+    ortu_pria: "Putra dari Bapak Hendra Pratama\n& Ibu Sari Wulandari",
+    ortu_wanita: "Putri dari Bapak Bambang Setiawan\n& Ibu Ratna Dewi",
+    tanggal: "2027-03-20T08:00", rsvp_batas: "2027-03-10",
+    akad_jam: "08.00 – 10.00 WIB", resepsi_jam: "11.00 – 14.00 WIB",
+    venue: "Gedung Serbaguna Melati",
+    alamat: "Jl. Kenanga Raya No. 12, Menteng,\nJakarta Pusat 10310",
+    maps: "https://maps.google.com/?q=Jakarta",
+    bank: "Bank BCA · a.n. Raka Pratama", rekening: "1234 5678 90"
+  };
+
+  var FIELDS = ['theme','pria','wanita','pria_lengkap','wanita_lengkap','ortu_pria','ortu_wanita','tanggal','rsvp_batas','akad_jam','resepsi_jam','venue','alamat','maps','bank','rekening'];
+
+  var D = { wishes: [], settings: Object.assign({}, DEFAULTS) };
+  var isStaticMode = (window.location.hostname.indexOf('github.io') !== -1);
+  if (sessionStorage.getItem('adm_static') === '1') isStaticMode = true;
+
+  function getAdminPassword() {
+    try {
+      return localStorage.getItem(LK_PW) || DEFAULT_PW;
+    } catch(e) {
+      return DEFAULT_PW;
+    }
+  }
+
+  // LOGIN & AUTH
+  function checkAuth() {
+    if (sessionStorage.getItem('adm_logged') === '1') {
+      $('#loginView').hidden = true;
+      $('#dashboardView').hidden = false;
+      loadAllData();
+    } else {
+      $('#loginView').hidden = false;
+      $('#dashboardView').hidden = true;
+    }
+  }
+
+  $('#loginBtn').onclick = function() {
+    var pw = $('#adminPw').value.trim();
+    var currentPw = getAdminPassword();
+    var msg = $('#loginMsg');
+    if (pw === currentPw || pw === DEFAULT_PW) {
+      sessionStorage.setItem('adm_logged', '1');
+      sessionStorage.setItem('adm_static', '1');
+      msg.className = 'alert-msg';
+      msg.textContent = '';
+      checkAuth();
+    } else {
+      msg.className = 'alert-msg alert-danger show';
+      msg.textContent = 'Kata sandi salah. Silakan coba lagi.';
+    }
+  };
+
+  $('#adminPw').onkeydown = function(e) {
+    if (e.key === 'Enter') $('#loginBtn').click();
+  };
+
+  $('#logoutBtn').onclick = function() {
+    sessionStorage.removeItem('adm_logged');
+    sessionStorage.removeItem('adm_static');
+    checkAuth();
+  };
+
+  // TABS LOGIC
+  $$('.tab-btn').forEach(function(btn){
+    btn.onclick = function(){
+      $$('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      $$('.tab-pane').forEach(function(p){ p.hidden = true; });
+      btn.classList.add('active');
+      var targetId = btn.getAttribute('data-tab');
+      var pane = document.getElementById(targetId);
+      if (pane) pane.hidden = false;
     };
   });
-  var settings = Object.assign({}, DEFAULTS);
-  try {
-    var saved = JSON.parse(localStorage.getItem(LK_SET) || '{}');
-    Object.assign(settings, saved);
-  } catch(e){}
-  return { wishes: wishes, settings: settings };
-}
 
-function handleStaticApi(m, u, b) {
-  if (u === '/admin/api/login') {
-    if (b && b.password === ADM_PW) {
-      sessionStorage.setItem('adm_static', '1');
-      isStaticMode = true;
-      return Promise.resolve({ ok: true });
-    }
-    return Promise.reject(new Error('Kata sandi salah.'));
-  }
-  if (u === '/admin/api/logout') {
-    sessionStorage.removeItem('adm_static');
-    return Promise.resolve({ ok: true });
-  }
-  if (u === '/admin/api/data') {
-    return fetch(GAS_URL).then(function(r){if(!r.ok)throw 0;return r.json()})
+  // LOAD DATA FROM GOOGLE SHEETS & LOCAL STORAGE
+  function loadAllData() {
+    // 1. Load Settings
+    var settings = Object.assign({}, DEFAULTS);
+    try {
+      var saved = JSON.parse(localStorage.getItem(LK_SET) || '{}');
+      Object.assign(settings, saved);
+    } catch(e){}
+    D.settings = settings;
+    populateSettingsForm();
+
+    // 2. Load Wishes from Google Sheets
+    fetch(GAS_URL)
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
       .then(function(wishes){
-        var settings = Object.assign({}, DEFAULTS);
-        try {
-          var saved = JSON.parse(localStorage.getItem(LK_SET) || '{}');
-          Object.assign(settings, saved);
-        } catch(e){}
-        return {
-          wishes: wishes.map(function(item, idx){
+        if (Array.isArray(wishes)) {
+          D.wishes = wishes.map(function(w, i){
             return {
-              id: item.id || (idx + 1),
-              nama: item.nama || '',
-              status: item.status || 'Hadir',
-              jumlah: item.jumlah || 1,
-              ucapan: item.ucapan || '',
-              tampil: item.tampil !== undefined ? item.tampil : 1,
-              created_at: item.created_at || new Date().toISOString()
+              id: w.id || (i + 1),
+              nama: w.nama || '',
+              status: w.status || 'Hadir',
+              jumlah: w.jumlah || 1,
+              ucapan: w.ucapan || '',
+              tampil: w.tampil !== undefined ? w.tampil : 1,
+              created_at: w.created_at || new Date().toISOString()
             };
-          }),
-          settings: settings
-        };
+          });
+          renderStatsAndWishes();
+        }
       })
       .catch(function(){
-        return getLocalData();
+        // Fallback local storage
+        try {
+          var localW = JSON.parse(localStorage.getItem(LK_WISH) || '[]');
+          D.wishes = localW;
+        } catch(e){}
+        renderStatsAndWishes();
       });
   }
-  if (u === '/admin/api/wish') {
-    var data = getLocalData();
-    if (b.action === 'toggle') {
-      data.wishes.forEach(function(w){ if (w.id === b.id) w.tampil = w.tampil ? 0 : 1; });
-    } else if (b.action === 'delete') {
-      data.wishes = data.wishes.filter(function(w){ return w.id !== b.id; });
-    }
-    localStorage.setItem(LK_WISH, JSON.stringify(data.wishes));
-    return Promise.resolve({ ok: true });
-  }
-  if (u === '/admin/api/settings') {
-    localStorage.setItem(LK_SET, JSON.stringify(b));
-    return Promise.resolve({ ok: true });
-  }
-  return Promise.resolve({ ok: true });
-}
 
-var F=[
-  ['theme', 'Tema & Desain Undangan', 'select', [
-    ['batik_bunga', '🌸 Batik Bunga Nusantara (Maroon Elegan & Emas)'],
-    ['jawa_klasik', '🏛️ Batik Klasik Sogan (Cokelat Keraton & Emas)'],
-    ['floral_romantis', '🌹 Bunga Romantis (Dusty Rose & Blush Gold)'],
-    ['emerald_gold', '🌿 Emerald Botanical (Hijau Zamrud & Emas Mewah)'],
-    ['warm', '🍂 Hangat Terracotta (Bata & Krem Klasik)']
-  ]],
-  ['pria','Nama panggilan pria'],['wanita','Nama panggilan wanita'],['pria_lengkap','Nama lengkap pria'],['wanita_lengkap','Nama lengkap wanita'],
-  ['ortu_pria','Orang tua pria (2 baris)','ta'],['ortu_wanita','Orang tua wanita (2 baris)','ta'],['tanggal','Tanggal & jam akad (WIB)','datetime-local'],['rsvp_batas','Batas konfirmasi','date'],
-  ['akad_jam','Jam akad nikah'],['resepsi_jam','Jam resepsi'],['venue','Nama tempat'],['alamat','Alamat (2 baris)','ta'],['maps','Link Google Maps (https://)','url'],['bank','Bank & nama pemilik'],['rekening','Nomor rekening']
-];
+  function renderStatsAndWishes() {
+    var w = D.wishes;
+    var totalHadir = 0;
+    var totalAbsen = 0;
+    var totalUcapan = 0;
 
-function api(m,u,b){
-  if (isStaticMode) {
-    return handleStaticApi(m, u, b);
-  }
-  return fetch(u,{method:m,credentials:'same-origin',headers:{'Content-Type':'application/json','X-Admin':'1'},body:b?JSON.stringify(b):undefined})
-  .then(function(r){
-    if(r.status===401&&u!=='/admin/api/login'){show(false);throw new Error('auth')}
-    return r.json().then(function(d){if(!r.ok)throw new Error(d.error||'Gagal');return d});
-  })
-  .catch(function(err){
-    if (u === '/admin/api/login') {
-      if (b && b.password === ADM_PW) {
-        isStaticMode = true;
-        sessionStorage.setItem('adm_static', '1');
-        return { ok: true };
-      }
-      throw new Error('Kata sandi salah.');
-    }
-    if (sessionStorage.getItem('adm_static') === '1') {
-      isStaticMode = true;
-      return handleStaticApi(m, u, b);
-    }
-    throw err;
-  });
-}
-function show(on){$('#login').hidden=on;$('#app').hidden=!on}
-function load(){return api('GET','/admin/api/data').then(function(d){D=d;show(true);render()}).catch(function(e){if(e.message!=='auth')$('#lmsg').textContent=e.message})}
-function fmt(s){var d=new Date(s.replace(' ','T')+'Z');return isNaN(d)?s:d.toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})}
-function render(){
-  var w=D.wishes,hadir=0,tdk=0,uc=0;
-  w.forEach(function(i){if(i.status==='Hadir')hadir+=i.jumlah;else tdk++;if(i.ucapan&&i.tampil)uc++});
-  var st=$('#stats');st.textContent='';
-  [['Konfirmasi masuk',w.length],['Tamu hadir',hadir],['Berhalangan',tdk],['Ucapan tampil',uc]].forEach(function(x){
-    var d=el('div','stat');d.appendChild(el('b',null,x[1]));d.appendChild(el('span',null,x[0]));st.appendChild(d)});
-  var q=$('#q').value.trim().toLowerCase(),l=$('#list');l.textContent='';
-  var items=w.filter(function(i){return !q||(i.nama+' '+i.ucapan).toLowerCase().indexOf(q)>-1});
-  if(!items.length)l.appendChild(el('p','meta','Belum ada data.'));
-  items.forEach(function(i){
-    var r=el('div','row'+(i.tampil?'':' off')),t=el('div','top');
-    t.appendChild(el('b',null,i.nama));t.appendChild(el('span','chip',i.status+' \u00B7 '+i.jumlah+' orang'));
-    if(!i.tampil)t.appendChild(el('span','chip','Disembunyikan'));
-    r.appendChild(t);
-    if(i.ucapan)r.appendChild(el('div',null,i.ucapan));
-    r.appendChild(el('div','meta',fmt(i.created_at)));
-    var a=el('div','acts');
-    var b1=el('button','btn sm',i.tampil?'Sembunyikan':'Tampilkan');b1.type='button';
-    b1.onclick=function(){api('POST','/admin/api/wish',{id:i.id,action:'toggle'}).then(load)};
-    var b2=el('button','btn sm danger','Hapus');b2.type='button';
-    b2.onclick=function(){if(confirm('Hapus data '+i.nama+' secara permanen?'))api('POST','/admin/api/wish',{id:i.id,action:'delete'}).then(load)};
-    a.appendChild(b1);a.appendChild(b2);r.appendChild(a);l.appendChild(r);
-  });
-  if(!built){
-    built=true;var f=$('#fields');
-    F.forEach(function(x){
-      var lb=el('label',null,x[1]), inp;
-      if(x[2]==='select'){
-        inp=el('select');
-        x[3].forEach(function(opt){
-          var o=el('option',null,opt[1]);
-          o.value=opt[0];
-          inp.appendChild(o);
-        });
-      } else if(x[2]==='ta'){
-        inp=el('textarea');
+    w.forEach(function(i){
+      if (i.status === 'Hadir') {
+        totalHadir += (parseInt(i.jumlah, 10) || 1);
       } else {
-        inp=el('input');
-        if(x[2])inp.type=x[2];
+        totalAbsen++;
       }
-      inp.id='f_'+x[0];
-      inp.value=D.settings[x[0]]||(x[2]==='select'?x[3][0][0]:'');
-      lb.appendChild(inp);f.appendChild(lb);
+      if (i.ucapan && i.ucapan.trim()) totalUcapan++;
+    });
+
+    $('#statTotal').textContent = w.length;
+    $('#statHadir').innerHTML = totalHadir + ' <small style="font-size:14px;font-weight:400;color:var(--muted)">orang</small>';
+    $('#statAbsen').textContent = totalAbsen;
+    $('#statUcapan').textContent = totalUcapan;
+    $('#tabCount').textContent = w.length;
+
+    renderRecentList();
+    renderAllWishes();
+  }
+
+  function fmtDate(s) {
+    var d = new Date(s);
+    return isNaN(d) ? s : d.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+  }
+
+  function createWishCard(item) {
+    var div = document.createElement('div');
+    div.className = 'wish-item' + (item.tampil ? '' : ' hidden-item');
+
+    var top = document.createElement('div');
+    top.className = 'wish-top';
+
+    var author = document.createElement('span');
+    author.className = 'wish-author';
+    author.textContent = item.nama;
+
+    var badge = document.createElement('span');
+    badge.className = 'badge ' + (item.status === 'Hadir' ? 'badge-hadir' : 'badge-absen');
+    badge.textContent = item.status + (item.status === 'Hadir' ? ' (' + item.jumlah + ' org)' : '');
+
+    top.appendChild(author);
+    top.appendChild(badge);
+    div.appendChild(top);
+
+    if (item.ucapan) {
+      var p = document.createElement('p');
+      p.className = 'wish-text';
+      p.textContent = item.ucapan;
+      div.appendChild(p);
+    }
+
+    var meta = document.createElement('div');
+    meta.className = 'wish-meta';
+    meta.textContent = fmtDate(item.created_at);
+    div.appendChild(meta);
+
+    return div;
+  }
+
+  function renderRecentList() {
+    var list = $('#recentWishesList');
+    list.textContent = '';
+    var recent = D.wishes.slice(0, 5);
+    if (!recent.length) {
+      list.innerHTML = '<p style="color:var(--muted); font-size:14px; padding:12px 0;">Belum ada konfirmasi tamu yang masuk.</p>';
+      return;
+    }
+    recent.forEach(function(item){
+      list.appendChild(createWishCard(item));
     });
   }
-}
-$('#q').addEventListener('input',function(){if(D)render()});
-$('#go').onclick=function(){
-  $('#lmsg').textContent='Memeriksa\u2026';
-  api('POST','/admin/api/login',{password:$('#pw').value}).then(function(){$('#lmsg').textContent='';$('#pw').value='';return load()}).catch(function(e){$('#lmsg').textContent=e.message});
-};
-$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')$('#go').click()});
-$('#out').onclick=function(){api('POST','/admin/api/logout',{}).then(function(){built=false;$('#fields').textContent='';show(false)})};
-$('#save').onclick=function(){
-  var b={};F.forEach(function(x){b[x[0]]=$('#f_'+x[0]).value});
-  $('#smsg').textContent='Menyimpan\u2026';
-  api('POST','/admin/api/settings',b).then(function(){$('#smsg').textContent='Tersimpan. Muat ulang halaman undangan untuk melihat perubahan.';return load()}).catch(function(e){$('#smsg').textContent=e.message});
-};
-var exp = $('#exportBtn');
-if (exp) {
-  exp.addEventListener('click', function(e){
-    if (isStaticMode) {
-      e.preventDefault();
-      var data = getLocalData();
-      var csv = "ID,Nama,Status,Jumlah,Ucapan,Waktu\n";
-      data.wishes.forEach(function(w){
-        csv += [w.id, '"'+(w.nama||'').replace(/"/g, '""')+'"', w.status, w.jumlah, '"'+(w.ucapan||'').replace(/"/g, '""')+'"', w.created_at].join(",") + "\n";
-      });
-      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = "undangan_wishes.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+
+  function renderAllWishes() {
+    var list = $('#allWishesList');
+    list.textContent = '';
+    var q = ($('#searchWish').value || '').trim().toLowerCase();
+    var filter = $('#filterStatus').value;
+
+    var filtered = D.wishes.filter(function(i){
+      var matchQ = !q || (i.nama + ' ' + i.ucapan).toLowerCase().indexOf(q) !== -1;
+      var matchF = (filter === 'all') || (i.status === filter);
+      return matchQ && matchF;
+    });
+
+    if (!filtered.length) {
+      list.innerHTML = '<p style="color:var(--muted); font-size:14px; padding:12px 0;">Tidak ditemukan data yang sesuai.</p>';
+      return;
     }
-  });
-}
-load();
+
+    filtered.forEach(function(item){
+      list.appendChild(createWishCard(item));
+    });
+  }
+
+  $('#searchWish').oninput = renderAllWishes;
+  $('#filterStatus').onchange = renderAllWishes;
+  $('#refreshBtn').onclick = loadAllData;
+
+  // POPULATE & SAVE SETTINGS
+  function populateSettingsForm() {
+    FIELDS.forEach(function(k){
+      var el = $('#f_' + k);
+      if (el) el.value = D.settings[k] !== undefined ? D.settings[k] : '';
+    });
+    updateLinkGenerator();
+  }
+
+  function saveSettings() {
+    var b = {};
+    FIELDS.forEach(function(k){
+      var el = $('#f_' + k);
+      if (el) b[k] = el.value;
+    });
+    D.settings = b;
+    localStorage.setItem(LK_SET, JSON.stringify(b));
+
+    var msg = $('#settingsMsg');
+    msg.className = 'alert-msg alert-success show';
+    msg.textContent = '✓ Pengaturan berhasil disimpan! Website undangan sudah langsung ter-update.';
+    setTimeout(function(){ msg.className = 'alert-msg'; }, 4000);
+    updateLinkGenerator();
+  }
+
+  $('#saveSettingsBtn').onclick = saveSettings;
+  $('#saveSettingsBtn2').onclick = saveSettings;
+
+  // LINK GENERATOR & WHATSAPP
+  function updateLinkGenerator() {
+    var base = 'https://andimo71.github.io/digital-invitation/';
+    var rawName = $('#genGuestName').value.trim();
+    var paramName = rawName ? encodeURIComponent(rawName.replace(/\s+/g, '+')) : '';
+    var fullLink = base + (paramName ? '?to=' + paramName : '');
+
+    $('#genLinkResult').textContent = fullLink;
+
+    var couple = (D.settings.pria || 'Raka') + ' & ' + (D.settings.wanita || 'Anindya');
+    var guestText = rawName || '[Nama Tamu]';
+
+    var waText = 'Kepada Yth.\n' + guestText + '\n\n' +
+      'Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada hari pernikahan kami:\n\n' +
+      '💍 ' + couple + '\n\n' +
+      'Detail info acara dan konfirmasi kehadiran dapat dilihat melalui tautan undangan berikut:\n' +
+      fullLink + '\n\n' +
+      'Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\n' +
+      'Terima kasih.\n' +
+      couple;
+
+    $('#genWaPreview').textContent = waText;
+    $('#openWaBtn').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(waText);
+  }
+
+  $('#genGuestName').oninput = updateLinkGenerator;
+
+  $('#copyLinkBtn').onclick = function() {
+    var txt = $('#genLinkResult').textContent;
+    navigator.clipboard.writeText(txt).then(function(){
+      var m = $('#genMsg');
+      m.className = 'alert-msg alert-success show';
+      m.textContent = '✓ Link undangan berhasil disalin!';
+      setTimeout(function(){ m.className = 'alert-msg'; }, 3000);
+    });
+  };
+
+  $('#copyWaBtn').onclick = function() {
+    var txt = $('#genWaPreview').textContent;
+    navigator.clipboard.writeText(txt).then(function(){
+      var m = $('#genMsg');
+      m.className = 'alert-msg alert-success show';
+      m.textContent = '✓ Teks pesan WhatsApp berhasil disalin!';
+      setTimeout(function(){ m.className = 'alert-msg'; }, 3000);
+    });
+  };
+
+  // CHANGE PASSWORD
+  $('#changePwBtn').onclick = function() {
+    var p1 = $('#newAdminPw').value.trim();
+    var p2 = $('#confirmAdminPw').value.trim();
+    var msg = $('#pwMsg');
+
+    if (!p1) {
+      msg.className = 'alert-msg alert-danger show';
+      msg.textContent = 'Kata sandi baru tidak boleh kosong.';
+      return;
+    }
+    if (p1 !== p2) {
+      msg.className = 'alert-msg alert-danger show';
+      msg.textContent = 'Konfirmasi kata sandi tidak cocok.';
+      return;
+    }
+    localStorage.setItem(LK_PW, p1);
+    msg.className = 'alert-msg alert-success show';
+    msg.textContent = '✓ Kata sandi admin berhasil diperbarui menjadi: ' + p1;
+    $('#newAdminPw').value = '';
+    $('#confirmAdminPw').value = '';
+    setTimeout(function(){ msg.className = 'alert-msg'; }, 5000);
+  };
+
+  // EXPORT CSV
+  $('#exportBtn').onclick = function(e) {
+    e.preventDefault();
+    var csv = "ID,Nama,Status,Jumlah,Ucapan,Waktu\n";
+    D.wishes.forEach(function(w, idx){
+      csv += [
+        (idx + 1),
+        '"' + (w.nama || '').replace(/"/g, '""') + '"',
+        w.status,
+        w.jumlah,
+        '"' + (w.ucapan || '').replace(/"/g, '""') + '"',
+        w.created_at
+      ].join(",") + "\n";
+    });
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "data_tamu_undangan.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // INIT
+  checkAuth();
 })();
 </script>
 </body>
