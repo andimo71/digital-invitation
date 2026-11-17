@@ -121,7 +121,7 @@ footer p{color:var(--muted);font-size:14px;max-width:34ch;margin:14px auto 0}
     <div class="amp">&amp;</div>
     <h1 class="names" data-k="wanita">Anindya</h1>
     <div class="date" data-k="tgl_cover">Sabtu · 20 Maret 2027</div>
-    <p class="guest">Kepada Yth.<b>Nama Tamu Undangan</b></p>
+    <p class="guest">Kepada Yth.<b id="guest-name">Nama Tamu Undangan</b></p>
     <a class="btn" href="#salam">Buka Undangan</a>
   </div>
 </header>
@@ -263,6 +263,29 @@ Jakarta Pusat 10310</p>
     if(/^https:\/\//.test(c.maps||''))document.querySelectorAll('[data-kh="maps"]').forEach(function(a){a.href=c.maps});
   }
   fetch('/api/settings').then(function(r){if(!r.ok)throw 0;return r.json()}).then(applyCfg).catch(function(){});
+
+  // Baca nama tamu dari URL (?to=Nama+Tamu atau ?tamu=... atau #...)
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    var rawTamu = sp.get('to') || sp.get('tamu') || sp.get('u');
+    if (!rawTamu && window.location.hash && window.location.hash !== '#salam') {
+      var h = window.location.hash.replace(/^#/, '');
+      if (h && !h.startsWith('to=')) rawTamu = h;
+      else if (h.startsWith('to=')) rawTamu = h.slice(3);
+    }
+    if (rawTamu) {
+      var clean = decodeURIComponent(rawTamu);
+      if (clean.indexOf('+') !== -1) clean = clean.replace(/\+/g, ' ');
+      else if (clean.indexOf('-') !== -1 && clean.indexOf(' ') === -1) clean = clean.replace(/-/g, ' ');
+      clean = clean.trim();
+      if (clean) {
+        var gEl = document.getElementById('guest-name') || document.querySelector('.guest b');
+        if (gEl) gEl.textContent = clean;
+        var inpNama = document.getElementById('n');
+        if (inpNama) inpNama.value = clean;
+      }
+    }
+  } catch (e) {}
 
   var f=document.getElementById('f'),msg=document.getElementById('msg'),btn=document.getElementById('kirim');
   var track=document.getElementById('track'),list=document.getElementById('list');

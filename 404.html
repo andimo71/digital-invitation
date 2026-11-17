@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mengarahkan ke Undangan...</title>
+<script>
+(function() {
+  var path = window.location.pathname;
+  var base = '/digital-invitation/';
+  var idx = path.indexOf(base);
+  if (idx !== -1) {
+    var segment = path.slice(idx + base.length).replace(/\/$/, '');
+    if (segment && segment !== 'index.html' && segment !== 'admin.html') {
+      window.location.replace(base + '?to=' + encodeURIComponent(segment));
+      return;
+    }
+  }
+  window.location.replace(base);
+})();
+</script>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:40px;color:#555;">
+  <p>Membuka undangan...</p>
+</body>
+</html>
